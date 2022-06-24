@@ -1,0 +1,73 @@
+name: squared
+version: '1.0'
+profile: meltano
+config-version: 2
+require-dbt-version: [">=1.0.0", "<2.0.0"]
+model-paths:
+- models
+analysis-paths:
+- analysis
+test-paths:
+- tests
+seed-paths:
+- data
+macro-paths:
+- macros
+snapshot-paths:
+- snapshots
+target-path: ../.meltano/transformers/dbt/target
+log-path: logs
+packages-install-path: dbt_packages
+clean-targets:
+- ../.meltano/transformers/dbt/target
+- dbt_packages
+- logs
+
+seeds:
+  quote_columns: false
+  +schema: SEED
+
+models:
+  squared:
+
+    # ------------------
+    # Staging
+    # ------------------
+    staging:
+      +database: "{{ env_var('DBT_SNOWFLAKE_DATABASE_PREP') }}"
+      github_search:
+        +schema: github_search
+      google_analytics:
+        +schema: google_analytics
+      gitlab:
+        +schema: gitlab
+      github_meltano:
+        +schema: github_meltano
+      slack:
+        +schema: slack
+      snowplow:
+        +schema: snowplow
+    # ------------------
+    # Publish
+    # ------------------
+    publish:
+      +materialized: table
+      meltano_hub:
+        +schema: meltano_hub
+    # ------------------
+    # Marts
+    # ------------------
+    marts:
+      +materialized: table
+      telemetry:
+        base:
+          +database: "{{ env_var('DBT_SNOWFLAKE_DATABASE_PREP') }}"
+          +schema: workspace
+          +materialized: view
+        +schema: telemetry
+      community:
+        base:
+          +database: "{{ env_var('DBT_SNOWFLAKE_DATABASE_PREP') }}"
+          +schema: workspace
+          +materialized: view
+        +schema: community
