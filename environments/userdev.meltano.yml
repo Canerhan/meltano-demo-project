@@ -2,6 +2,7 @@ environments:
 - name: userdev
   config:
     plugins:
+
       extractors:
       - name: tap-google-analytics
         config:
@@ -25,6 +26,13 @@ environments:
       - name: tap-snowflake-audit
         config:
           tables: USERDEV_PROD.MELTANO_HUB.HUB_METRICS_AUDIT
+      - name: tap-postgres
+        config:
+          host: localhost
+          port: 5339
+          user: gitea
+          dbname: gitea
+
       loaders:
       - name: target-snowflake
         config:
@@ -32,6 +40,12 @@ environments:
           user: ${USER_PREFIX}
           role: ${USER_PREFIX}
           warehouse: CORE
+      - name: target-postgres
+        config:
+          dbname: postgres
+          user: postgres
+          port: 5339
+
       transformers:
       - name: dbt-snowflake
         config:
@@ -41,10 +55,8 @@ environments:
           database: USERDEV_PROD
           database_prep: USERDEV_PREP
           database_raw: RAW
-          # Uncomment for reading custom a RAW schema
-          # database_raw: USERDEV_RAW
-          # source_schema_prefix: ${USER_PREFIX}_
           target_schema_prefix: ${USER_PREFIX}_
+
       utilities:
       - name: sqlfluff
         config:
@@ -56,12 +68,12 @@ environments:
           username: ${USER_PREFIX}
           role: ${USER_PREFIX}
           warehouse: CORE
+
   env:
     USER_PREFIX: melty
     SUPERSET_API_URL: http://localhost:8088
     SUPERSET_USER: admin
     SUPERSET_PASS: admin
-    # https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html
     AIRFLOW__CORE__PLUGINS_FOLDER: $MELTANO_PROJECT_ROOT/orchestrate/plugins_local
     AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: '30'
     AIRFLOW_VAR_MELTANO_ENVIRONMENT: userdev
