@@ -28,7 +28,7 @@ environments:
           tables: USERDEV_PROD.MELTANO_HUB.HUB_METRICS_AUDIT
       - name: tap-postgres
         config:
-          host: localhost
+          host: 192.168.0.22
           port: 5339
           user: gitea
           dbname: gitea
@@ -45,7 +45,7 @@ environments:
           dbname: postgres
           user: postgres
           port: 5339
-
+          host: 192.168.0.22
       transformers:
       - name: dbt-snowflake
         config:
