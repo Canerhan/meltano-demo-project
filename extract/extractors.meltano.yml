@@ -1,5 +1,12 @@
 plugins:
   extractors:
+  - name: tap-postgres
+    variant: transferwise
+    pip_url: pipelinewise-tap-postgres
+    capabilities:
+    - catalog
+    - discover
+    - state
   - name: tap-slack
     namespace: tap_slack
     pip_url: git+https://github.com/MeltanoLabs/tap-slack.git@f0205cd4016d6cd4f46cf11841aaffe13fb2cc8d
@@ -38,10 +45,7 @@ plugins:
     - name: client_secrets
       kind: object
     config:
-      view_id: '188392047' # CLI
-      # view_id: '188274549' # Meltano Website
-      # view_id: '188384771' # Meltano UI
-      # view_id: '210710793' # Newsletter
+      view_id: '188392047'
       reports: ./extract/ga_reports/cli_events_report_definition.json
   - name: tap-gitlab
     variant: meltanolabs
@@ -89,17 +93,15 @@ plugins:
       metrics_log_level: DEBUG
       stream_maps:
         repositories:
-          __filter__: >
-            ('tap-' in name or 'target-' in full_name)
-            and name != 'singer-tap-template'
-            and name != 'singer-target-template'
+          __filter__: '(''tap-'' in name or ''target-'' in full_name) and name !=
+            ''singer-tap-template'' and name != ''singer-target-template''
+
+            '
     select:
     - repositories.*
-    # - issues.*
-    # - issue_comments.*
     - '!*.comments'
     - '!*.body'
-    - '!*.reactions'  # Broken JSON Schema validator for issues
+    - '!*.reactions'
   - name: tap-snowflake
     namespace: tap_snowflake
     pip_url: git+https://github.com/transferwise/pipelinewise-tap-snowflake.git@15699411cc0ff87f11a3f7e637f01a2eb8cbf9da
@@ -126,16 +128,16 @@ plugins:
       '*':
         replication-method: FULL_TABLE
     select:
-      - '*FACT_HUB_METRICS.REPO_FULL_NAME'
-      - '*FACT_HUB_METRICS.CREATED_AT_TIMESTAMP'
-      - '*FACT_HUB_METRICS.LAST_PUSH_TIMESTAMP'
-      - '*FACT_HUB_METRICS.LAST_UPDATED_TIMESTAMP'
-      - '*FACT_HUB_METRICS.NUM_FORKS'
-      - '*FACT_HUB_METRICS.NUM_OPEN_ISSUES'
-      - '*FACT_HUB_METRICS.NUM_STARGAZERS'
-      - '*FACT_HUB_METRICS.NUM_WATCHERS'
-      - '*FACT_HUB_METRICS.MELTANO_EXEC_COUNT_3M'
-      - '*FACT_HUB_METRICS.MELTANO_PROJECT_ID_COUNT_3M'
+    - '*FACT_HUB_METRICS.REPO_FULL_NAME'
+    - '*FACT_HUB_METRICS.CREATED_AT_TIMESTAMP'
+    - '*FACT_HUB_METRICS.LAST_PUSH_TIMESTAMP'
+    - '*FACT_HUB_METRICS.LAST_UPDATED_TIMESTAMP'
+    - '*FACT_HUB_METRICS.NUM_FORKS'
+    - '*FACT_HUB_METRICS.NUM_OPEN_ISSUES'
+    - '*FACT_HUB_METRICS.NUM_STARGAZERS'
+    - '*FACT_HUB_METRICS.NUM_WATCHERS'
+    - '*FACT_HUB_METRICS.MELTANO_EXEC_COUNT_3M'
+    - '*FACT_HUB_METRICS.MELTANO_PROJECT_ID_COUNT_3M'
   - name: tap-snowflake-audit
     inherit_from: tap-snowflake
     metadata:
