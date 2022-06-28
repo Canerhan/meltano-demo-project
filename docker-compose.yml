@@ -100,14 +100,14 @@ services:
 
 networks:
   meltano:
-  # # Uncomment if you are using the Airflow orchestrator, delete otherwise
-  # airflow:
+  # Uncomment if you are using the Airflow orchestrator, delete otherwise
+  airflow:
 
 volumes:
   meltano_postgresql_data:
     driver: local
   meltano_elt_logs_data:
     driver: local
-  # # Uncomment if you are using the Airflow orchestrator, delete otherwise
-  # airflow_postgresql_data:
-  #   driver: local
+  # Uncomment if you are using the Airflow orchestrator, delete otherwise
+  airflow_postgresql_data:
+    driver: local
