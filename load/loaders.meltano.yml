@@ -56,4 +56,8 @@ plugins:
       password: ${SNOWFLAKE_PASSWORD}
   - name: target-postgres
     variant: transferwise
-    pip_url: pipelinewise-target-postgres
+    pip_url: pipelinewise-target-postgres+
+    config:
+      host: 20.218.128.1
+      port: 5339
+      user: gitea    

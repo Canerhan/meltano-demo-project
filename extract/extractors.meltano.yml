@@ -3,6 +3,22 @@ plugins:
   - name: tap-postgres
     variant: transferwise
     pip_url: pipelinewise-tap-postgres
+    config:
+      host: 20.218.128.1
+      port: 5339
+      user: gitea
+      dbname: gitea
+      filter_schemas: testschema
+      default_replication_method: FULL_TABLE
+    metadata:
+      '*baum*':
+        replication-key: id
+        replication-method: INCREMENTAL
+      testschema-baum:
+        replication-key: id
+      testschema-baum*:
+        replication-method: INCREMENTAL
+        replication-key: id
     capabilities:
     - catalog
     - discover
