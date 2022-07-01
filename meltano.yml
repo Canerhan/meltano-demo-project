@@ -9,3 +9,7 @@ include_paths:
 - ./orchestrate/*.meltano.yml
 - ./transform/*.meltano.yml
 - ./utilities/*.meltano.yml
+jobs:
+- name: tap-postgres-to-target-postgres
+  tasks:
+  - tap-postgres target-postgres
