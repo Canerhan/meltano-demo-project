@@ -9,6 +9,15 @@ include_paths:
 - ./orchestrate/*.meltano.yml
 - ./transform/*.meltano.yml
 - ./utilities/*.meltano.yml
+plugins:
+  transformers:
+  - name: dbt-postgres
+    variant: dbt-labs
+    pip_url: dbt-core~=1.0.0 dbt-postgres~=1.0.0
+schedules:
+- name: daily-postgres-load
+  interval: '@daily'
+  job: tap-postgres-to-target-postgres
 jobs:
 - name: tap-postgres-to-target-postgres
   tasks:
