@@ -31,6 +31,8 @@ environments:
           port: 5339
           user: gitea
           dbname: gitea
+          filter_schemas: testschema
+          default_replication_method: FULL_TABLE
       loaders:
       - name: target-snowflake
         config:

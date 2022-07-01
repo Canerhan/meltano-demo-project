@@ -70,3 +70,6 @@ plugins:
     commands:
       run: run utilities/permifrost/roles.yml
       spec-test: spec-test utilities/permifrost/roles.yml
+  - name: datahub
+    variant: datahub-project
+    pip_url: acryl-datahub[rest,mongodb,metabase,bigquery,bigquery-usage,dbt]
