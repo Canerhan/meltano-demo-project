@@ -9,8 +9,3 @@ include_paths:
 - ./orchestrate/*.meltano.yml
 - ./transform/*.meltano.yml
 - ./utilities/*.meltano.yml
-plugins:
-  loaders:
-  - name: target-postgres
-    variant: transferwise
-    pip_url: pipelinewise-target-postgres
